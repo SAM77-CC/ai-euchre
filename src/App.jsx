@@ -22,22 +22,22 @@ const FUNNY_PASS_MESSAGES = [
 ];
 
 const FUNNY_SKIP_PHRASES = [
-  "Fold 'em! The math doesn't lie 🧮",
-  "Wrap it up, we're done here 🌯",
-  "Fast-forward this snooze fest 😴",
-  "Throw in the towel! 🏳️",
-  "Skip the drama, next hand! ⏭️",
-  "Ain't nobody got time for this! ⏱️",
-  "Boring hand! Shuffle 'em up! 🎴",
-  "Mathematical mercy rule! 🚨"
+  "Fold 'em! 🧮",
+  "Wrap it up! 🌯",
+  "Snooze fest! 😴",
+  "Throw towel! 🏳️",
+  "Skip drama! ⏭️",
+  "No time! ⏱️",
+  "Boring hand! 🎴",
+  "Mercy rule! 🚨"
 ];
 
 // Funny, sarcastic callout screens for when a human gets caught reneging in Hard Mode
 const FUNNY_RENEGE_QUOTES = [
-  { title: "🚨 YOU WERE CAUGHT - RENEGING! LOSER! 🚨", desc: "You tried to sneak that card past a neural network? Nice try, slick! Bots see EVERYTHING! 🫵🤖" },
+  { title: "🚨 CAUGHT RED-HANDED! 🚨", desc: "You tried to sneak that card past a neural network? Nice try, slick! Bots see EVERYTHING! 🫵🤖" },
   { title: "🐔 COWARDLY CHEATER! 🐔", desc: "You had a lead suit card but tried to play dumb. Absolute amateur hour! Loser! 💀" },
   { title: "🤷‍♂️ ARE YOU FOR REAL? 🤷‍♂️", desc: "Did you 'forget' you had that suit, or is your memory bank malfunctioning? The AI remembers! 🫵🚨" },
-  { title: "🤡 BRAIN-FADE OF THE CENTURY! 🤡", desc: "You brought a butterknife to an AI cardfight and got caught red-handed! Reneging is illegal in 48 states! 🇺🇸💸" }
+  { title: "🤡 BRAIN-FADE! 🤡", desc: "You brought a butterknife to an AI cardfight and got caught! Reneging is illegal! 🇺🇸💸" }
 ];
 
 // Color profiles for visual customization of card backs
@@ -106,6 +106,24 @@ const GLOBAL_CSS = `
     0%, 100% { transform: translateX(-5px) translateY(0); }
     50% { transform: translateX(5px) translateY(-8px); }
   }
+
+  /* Extreme Heights Optimization for Mobile Portrait Viewports */
+  @media (max-height: 740px) {
+    .game-table-container {
+      transform: scale(0.85);
+      transform-origin: center center;
+    }
+    .game-table-felt {
+      width: 140px !important;
+      height: 140px !important;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .fanned-hand-container {
+      transform: scale(0.95);
+    }
+  }
 `;
 
 // Helper to determine text color of a suit
@@ -119,35 +137,35 @@ const renderCard = (card, onClick = null, isPlayable = true) => {
   return (
     <div 
       onClick={isPlayable ? onClick : undefined}
-      className={`relative w-16 h-24 sm:w-24 sm:h-36 bg-[#fdfdfd] rounded-xl shadow-[2px_4px_12px_rgba(0,0,0,0.4)] border border-gray-300 flex flex-col justify-between overflow-hidden
+      className={`relative w-11 h-16 xs:w-14 xs:h-20 sm:w-24 sm:h-36 bg-[#fdfdfd] rounded-lg sm:rounded-xl shadow-[2px_4px_12px_rgba(0,0,0,0.4)] border border-gray-300 flex flex-col justify-between overflow-hidden
         ${getSuitColor(card.suit)} 
         ${isPlayable && onClick ? 'cursor-pointer hover:-translate-y-4 hover:shadow-[4px_8px_24px_rgba(0,0,0,0.6)] transition-all duration-300' : 'transition-all duration-300'}
         ${!isPlayable ? 'opacity-60 brightness-90' : ''} ring-1 ring-black/10 ring-inset group`}
     >
-      <div className="absolute inset-1 sm:inset-1.5 border-[0.5px] border-slate-300 rounded-lg pointer-events-none"></div>
+      <div className="absolute inset-0.5 sm:inset-1.5 border-[0.5px] border-slate-300 rounded-md sm:rounded-lg pointer-events-none"></div>
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/rice-paper.png')]"></div>
       
-      <div className="absolute top-1 left-1.5 sm:top-2 sm:left-2 flex flex-col items-center font-serif z-10">
-        <span className="text-sm sm:text-xl font-bold leading-none tracking-tighter">{card.rank}</span>
-        <span className="text-xs sm:text-lg leading-none mt-0.5">{card.suit}</span>
+      <div className="absolute top-0.5 left-1 sm:top-2 sm:left-2 flex flex-col items-center font-serif z-10">
+        <span className="text-[10px] xs:text-sm sm:text-xl font-bold leading-none tracking-tighter">{card.rank}</span>
+        <span className="text-[9px] xs:text-xs sm:text-lg leading-none mt-0.5">{card.suit}</span>
       </div>
       
-      <div className="flex-1 flex items-center justify-center relative w-full h-full p-3 sm:p-5">
+      <div className="flex-1 flex items-center justify-center relative w-full h-full p-1.5 sm:p-5">
         {isFaceCard && (
           <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-             <div className="w-10 h-14 sm:w-16 sm:h-20 border-2 border-current rounded-sm flex items-center justify-center">
-               <span className="text-5xl sm:text-7xl font-serif">{card.rank}</span>
+             <div className="w-6 h-9 xs:w-8 xs:h-12 sm:w-16 sm:h-20 border border-current rounded-sm flex items-center justify-center">
+               <span className="text-xl xs:text-2xl sm:text-7xl font-serif">{card.rank}</span>
              </div>
           </div>
         )}
-        <span className={`text-4xl sm:text-6xl drop-shadow-sm transform group-hover:scale-110 transition-transform duration-300 ${isFaceCard ? 'mt-2' : ''}`}>
+        <span className={`text-xl xs:text-3xl sm:text-6xl drop-shadow-sm transform group-hover:scale-110 transition-transform duration-300 ${isFaceCard ? 'mt-1' : ''}`}>
           {card.suit}
         </span>
       </div>
       
-      <div className="absolute bottom-1 right-1.5 sm:bottom-2 sm:right-2 flex flex-col items-center rotate-180 font-serif z-10">
-        <span className="text-sm sm:text-xl font-bold leading-none tracking-tighter">{card.rank}</span>
-        <span className="text-xs sm:text-lg leading-none mt-0.5">{card.suit}</span>
+      <div className="absolute bottom-0.5 right-1 sm:bottom-2 sm:right-2 flex flex-col items-center rotate-180 font-serif z-10">
+        <span className="text-[10px] xs:text-sm sm:text-xl font-bold leading-none tracking-tighter">{card.rank}</span>
+        <span className="text-[9px] xs:text-xs sm:text-lg leading-none mt-0.5">{card.suit}</span>
       </div>
     </div>
   );
@@ -155,33 +173,32 @@ const renderCard = (card, onClick = null, isPlayable = true) => {
 
 const renderCardBack = (activeDeckStyle) => {
   return (
-    <div className={`w-12 h-16 sm:w-20 sm:h-28 rounded-xl shadow-[2px_4px_12px_rgba(0,0,0,0.4)] border ${activeDeckStyle.border} flex items-center justify-center overflow-hidden bg-gradient-to-br ${activeDeckStyle.bg} relative`}>
+    <div className={`w-8 h-12 xs:w-11 xs:h-16 sm:w-20 sm:h-28 rounded-lg sm:rounded-xl shadow-[1px_2px_6px_rgba(0,0,0,0.4)] border ${activeDeckStyle.border} flex items-center justify-center overflow-hidden bg-gradient-to-br ${activeDeckStyle.bg} relative`}>
       <div className="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_6px,rgba(255,255,255,1)_6px,rgba(255,255,255,1)_12px)]"></div>
-      <div className="absolute inset-1.5 border-2 border-white/60 rounded-lg"></div>
+      <div className="absolute inset-1 sm:inset-1.5 border border-white/60 rounded-md"></div>
     </div>
   );
 };
 
 const getMakerFrameClasses = (maker, playerIndex, trump) => {
   if (maker === playerIndex && trump) {
-    return "bg-gradient-to-br from-yellow-200 via-yellow-500 to-yellow-800 p-[3px] sm:p-1 rounded-[1.5rem] shadow-[0_0_30px_rgba(234,179,8,0.6)] z-40 transition-all duration-500 scale-[1.02]";
+    return "bg-gradient-to-br from-yellow-200 via-yellow-500 to-yellow-800 p-[2px] sm:p-1 rounded-[1rem] sm:rounded-[1.5rem] shadow-[0_0_20px_rgba(234,179,8,0.5)] z-40 transition-all duration-500 scale-[1.01]";
   }
-  return "p-[3px] sm:p-1 rounded-[1.5rem] transition-all duration-500 border border-transparent";
+  return "p-[2px] sm:p-1 rounded-[1rem] sm:rounded-[1.5rem] transition-all duration-500 border border-transparent";
 };
 
 const getMakerInnerClasses = (maker, playerIndex, trump) => {
   if (maker === playerIndex && trump) {
-    return "bg-black/40 backdrop-blur-md rounded-[1.3rem]";
+    return "bg-black/40 backdrop-blur-md rounded-[0.9rem] sm:rounded-[1.3rem]";
   }
-  return "rounded-[1.3rem]";
+  return "rounded-[0.9rem] sm:rounded-[1.3rem]";
 };
 
 const renderDealerCoin = (dealer, playerIndex, positionClasses) => {
   if (dealer === null || dealer !== playerIndex) return null;
   return (
-    <div className={`absolute ${positionClasses} w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center shadow-[0_6px_15px_rgba(0,0,0,0.6),inset_0_4px_6px_rgba(255,255,255,1),inset_0_-4px_6px_rgba(0,0,0,0.2)] border-4 border-gray-900 shrink-0 z-[70] animate-bounce pointer-events-auto`} title="Dealer">
-       <div className="absolute inset-[2px] border-[1px] border-dotted border-gray-400 rounded-full opacity-60"></div>
-       <span className="text-gray-900 font-black text-[9px] sm:text-[11px] tracking-widest leading-none">DEALER</span>
+    <div className={`absolute ${positionClasses} w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center shadow-[0_4px_10px_rgba(0,0,0,0.6),inset_0_2px_4px_rgba(255,255,255,1)] border-2 sm:border-4 border-gray-900 shrink-0 z-[70] animate-bounce pointer-events-auto`} title="Dealer">
+       <span className="text-gray-900 font-black text-[7px] sm:text-[11px] tracking-widest leading-none">DEALER</span>
     </div>
   );
 };
@@ -189,18 +206,18 @@ const renderDealerCoin = (dealer, playerIndex, positionClasses) => {
 const renderPlayerBadge = (currentPlayer, gameState, playerIndex, name, maker, trump, extraClasses = "") => {
   const isTurn = currentPlayer === playerIndex && !['round_over', 'game_over', 'finding_dealer', 'no_trump_passed', 'dealing_cards', 'renege_caught'].includes(gameState);
   return (
-    <div className={`flex items-center gap-3 ${extraClasses} pointer-events-none`}>
-      <div className={`flex items-center gap-2 bg-black/80 backdrop-blur-md border px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-[0_4px_10px_rgba(0,0,0,0.5)] transition-all duration-300 pointer-events-auto ${isTurn ? 'border-green-400 text-green-100 shadow-[0_0_15px_rgba(74,222,128,0.6)] ring-1 ring-green-400 scale-105' : 'border-white/20 text-white'}`}>
+    <div className={`flex items-center gap-1.5 sm:gap-3 ${extraClasses} pointer-events-none`}>
+      <div className={`flex items-center gap-1 sm:gap-2 bg-black/80 backdrop-blur-md border px-2 sm:px-4 py-1 rounded-full text-[10px] sm:text-sm font-semibold shadow-[0_4px_10px_rgba(0,0,0,0.5)] transition-all duration-300 pointer-events-auto ${isTurn ? 'border-green-400 text-green-100 shadow-[0_0_15px_rgba(74,222,128,0.6)] ring-1 ring-green-400 scale-105' : 'border-white/20 text-white'}`}>
         <span className="whitespace-nowrap">{name}</span>
         {maker === playerIndex && trump && (
-          <div className={`bg-white px-1.5 py-0.5 rounded text-sm sm:text-base leading-none shadow-[0_2px_4px_rgba(0,0,0,0.4)] shrink-0 font-bold border border-gray-200 ${getSuitColor(trump)}`} title="Maker of Trump">
+          <div className={`bg-white px-1 py-0.5 rounded text-xs sm:text-base leading-none shadow-[0_1px_2px_rgba(0,0,0,0.4)] shrink-0 font-bold border border-gray-200 ${getSuitColor(trump)}`} title="Maker of Trump">
             {trump}
           </div>
         )}
       </div>
       {isTurn && playerIndex === 0 && (
-         <div className="flex items-center gap-1.5 sm:gap-2 bg-green-500/20 text-green-300 border border-green-500/40 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold shadow-[0_0_10px_rgba(34,197,94,0.4)] whitespace-nowrap pointer-events-auto">
-           <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-400 rounded-full animate-ping shrink-0"></div>
+         <div className="flex items-center gap-1 bg-green-500/20 text-green-300 border border-green-500/40 px-1.5 sm:px-3 py-0.5 rounded-full text-[8px] sm:text-xs font-bold shadow-[0_0_10px_rgba(34,197,94,0.4)] whitespace-nowrap pointer-events-auto">
+           <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping shrink-0"></div>
            YOUR TURN
          </div>
       )}
@@ -705,7 +722,7 @@ const playSound = (type) => {
         gain.gain.linearRampToValueAtTime(0, t + 1.5);
 
         osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
-        osc.start(start); osc.stop(start + dur + 0.05);
+        osc.start(); osc.stop(t + 1.6);
       }
       break;
     }
@@ -1518,38 +1535,38 @@ export default function App() {
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50">
           <button 
             onClick={() => { setShowStatsModal(true); playSound('click'); }}
-            className="bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-black py-2 px-3 sm:px-4 rounded-full shadow-[0_0_15px_rgba(234,179,8,0.4)] text-xs sm:text-sm tracking-wider transition-all hover:scale-105 active:scale-95 border-2 border-yellow-200 flex items-center gap-1.5 sm:gap-2"
+            className="bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-black py-1.5 px-3 sm:px-4 rounded-full shadow-[0_0_15px_rgba(234,179,8,0.4)] text-xs sm:text-sm tracking-wider transition-all hover:scale-105 active:scale-95 border border-yellow-200 flex items-center gap-1.5"
           >
-            <span className="text-sm sm:text-base leading-none">📊</span>
-            <span className="hidden sm:inline">STATS</span>
+            <span className="text-sm leading-none">📊</span>
+            <span className="hidden xs:inline">STATS</span>
           </button>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center p-6 sm:p-10 my-4 bg-black/45 backdrop-blur-md rounded-3xl border border-white/15 shadow-2xl max-w-lg w-full">
-          <h1 className="text-5xl sm:text-7xl font-black mb-6 tracking-widest drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-gradient-to-b from-white via-yellow-200 to-amber-500 bg-clip-text text-transparent text-center select-none">
+        <div className="relative z-10 flex flex-col items-center p-5 sm:p-10 my-2 bg-black/45 backdrop-blur-md rounded-3xl border border-white/15 shadow-2xl max-w-lg w-full">
+          <h1 className="text-4xl sm:text-7xl font-black mb-4 tracking-widest drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-gradient-to-b from-white via-yellow-200 to-amber-500 bg-clip-text text-transparent text-center select-none">
             AI EUCHRE
           </h1>
           
-          <div className="flex gap-4 sm:gap-6 mb-6 bg-white/5 px-6 py-4 rounded-2xl shadow-inner border border-white/5 select-none">
-              <span className="text-red-500 text-3xl sm:text-5xl drop-shadow-md transform hover:scale-110 transition-transform">♥</span>
-              <span className="text-slate-200 text-3xl sm:text-5xl drop-shadow-md transform hover:scale-110 transition-transform">♠</span>
-              <span className="text-red-500 text-3xl sm:text-5xl drop-shadow-md transform hover:scale-110 transition-transform">♦</span>
-              <span className="text-slate-200 text-3xl sm:text-5xl drop-shadow-md transform hover:scale-110 transition-transform">♣</span>
+          <div className="flex gap-4 mb-4 bg-white/5 px-4 py-2 sm:px-6 sm:py-4 rounded-2xl shadow-inner border border-white/5 select-none">
+              <span className="text-red-500 text-2xl sm:text-5xl drop-shadow-md">♥</span>
+              <span className="text-slate-200 text-2xl sm:text-5xl drop-shadow-md">♠</span>
+              <span className="text-red-500 text-2xl sm:text-5xl drop-shadow-md">♦</span>
+              <span className="text-slate-200 text-2xl sm:text-5xl drop-shadow-md">♣</span>
           </div>
 
-          <p className="text-center mb-6 text-green-100/90 text-sm sm:text-base font-medium leading-relaxed max-w-sm">
+          <p className="text-center mb-5 text-green-100/90 text-xs sm:text-base font-medium leading-relaxed max-w-sm">
             Play classic Euchre alongside highly strategic neural opponents. First team to 10 wins!
           </p>
 
           {/* COLOR SELECTOR */}
-          <div className="w-full mb-6 text-center">
-            <h3 className="text-xs uppercase tracking-widest text-yellow-400 font-extrabold mb-3">Select Deck Theme</h3>
-            <div className="flex justify-center gap-3">
+          <div className="w-full mb-5 text-center">
+            <h3 className="text-[10px] sm:text-xs uppercase tracking-widest text-yellow-400 font-extrabold mb-2">Select Deck Theme</h3>
+            <div className="flex justify-center gap-2 sm:gap-3">
               {DECK_COLORS.map((deck) => (
                 <button
                   key={deck.id}
                   onClick={() => { setSelectedDeckId(deck.id); playSound('click'); }}
-                  className={`w-9 h-12 rounded-lg border-2 shadow-lg relative overflow-hidden transition-all duration-300 transform hover:scale-105 active:scale-95
+                  className={`w-7 h-10 sm:w-9 sm:h-12 rounded-lg border-2 shadow-lg relative overflow-hidden transition-all duration-300 transform hover:scale-105 active:scale-95
                     ${selectedDeckId === deck.id ? 'border-yellow-400 ring-2 ring-yellow-400/50 scale-110' : 'border-white/10 hover:border-white/40'}`}
                   title={deck.name}
                 >
@@ -1558,18 +1575,18 @@ export default function App() {
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-slate-400 mt-2 italic">
+            <p className="text-[9px] text-slate-400 mt-1.5 italic">
               Active: {DECK_COLORS.find(d => d.id === selectedDeckId)?.name}
             </p>
           </div>
 
           {/* DIFFICULTY SELECTOR */}
-          <div className="w-full mb-8 text-center font-sans">
-            <h3 className="text-xs uppercase tracking-widest text-yellow-400 font-extrabold mb-3">Set Match Difficulty</h3>
-            <div className="flex bg-black/40 p-1 rounded-full border border-white/5">
+          <div className="w-full mb-6 text-center font-sans">
+            <h3 className="text-[10px] sm:text-xs uppercase tracking-widest text-yellow-400 font-extrabold mb-2">Set Match Difficulty</h3>
+            <div className="flex bg-black/40 p-1 rounded-full border border-white/5 max-w-xs mx-auto">
               <button
                 onClick={() => { setDifficulty('normal'); playSound('click'); }}
-                className={`flex-1 py-2 text-xs font-black rounded-full tracking-wider transition-all duration-300
+                className={`flex-1 py-1.5 text-[10px] sm:text-xs font-black rounded-full tracking-wider transition-all duration-300
                   ${difficulty === 'normal' 
                     ? 'bg-gradient-to-r from-green-600 to-teal-700 text-white shadow-md' 
                     : 'text-slate-400 hover:text-white'}`}
@@ -1578,20 +1595,20 @@ export default function App() {
               </button>
               <button
                 onClick={() => { setDifficulty('hard'); playSound('click'); }}
-                className={`flex-1 py-2 text-xs font-black rounded-full tracking-wider transition-all duration-300
+                className={`flex-1 py-1.5 text-[10px] sm:text-xs font-black rounded-full tracking-wider transition-all duration-300
                   ${difficulty === 'hard' 
                     ? 'bg-gradient-to-r from-red-600 to-orange-700 text-white shadow-md' 
                     : 'text-slate-400 hover:text-white'}`}
               >
-                HARD (RENEGE ON ⚠️)
+                HARD
               </button>
             </div>
             {difficulty === 'hard' ? (
-              <p className="text-[11px] text-red-300 mt-2 px-2 italic leading-tight">
-                Warning: AI checks your follow-suit strictly! You can play out of suit, but get caught and opponents gain +2 Points instantly!
+              <p className="text-[10px] text-red-300 mt-2 px-2 italic leading-tight">
+                Warning: AI checks your suit strictly! Play out of suit and bots score +2 Pts immediately!
               </p>
             ) : (
-              <p className="text-[11px] text-slate-400 mt-2 px-2 italic leading-tight">
+              <p className="text-[10px] text-slate-400 mt-2 px-2 italic leading-tight">
                 Perfect for friendly play. Suit restrictions are fully automated for you.
               </p>
             )}
@@ -1599,7 +1616,7 @@ export default function App() {
 
           <button 
             onClick={handleStartGameRequest}
-            className="bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-black py-4 px-12 rounded-full shadow-[0_0_20px_rgba(234,179,8,0.4)] text-xl tracking-wider transition-all hover:scale-105 active:scale-95 border-2 border-yellow-200 pointer-events-auto"
+            className="bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-black py-2.5 px-8 sm:py-4 sm:px-12 rounded-full shadow-[0_0_20px_rgba(234,179,8,0.4)] text-base sm:text-xl tracking-wider transition-all hover:scale-105 active:scale-95 border border-yellow-200 pointer-events-auto"
           >
             START GAME
           </button>
@@ -1611,30 +1628,28 @@ export default function App() {
             <div className="bg-gradient-to-b from-slate-900 via-neutral-950 to-black border-2 border-red-500/50 p-6 sm:p-10 rounded-3xl shadow-[0_0_80px_rgba(239,68,68,0.4)] text-center w-full max-w-md pointer-events-auto">
                <div className="text-5xl mb-4 animate-bounce">⚠️</div>
                <h2 className="text-2xl sm:text-3xl font-black text-red-500 uppercase tracking-widest mb-3">
-                 RENEGING CONFLICT WARN
+                 RENEGING IS LIVE
                </h2>
-               <div className="bg-red-950/20 rounded-xl p-4 border border-red-900/30 mb-8 text-left text-xs sm:text-sm text-slate-200 space-y-3 leading-relaxed">
-                 <p>You are starting a match on <strong className="text-red-400">HARD LEVEL</strong>.</p>
-                 <p>In Euchre, "Reneging" is the illegal act of playing out of suit when you actually have matching suit cards in your hand.</p>
-                 <p>Unlike Normal Mode, <strong className="text-yellow-400">suit restriction gates are unlocked for you</strong>. If you make a mistake and play out of suit:</p>
+               <div className="bg-red-950/20 rounded-xl p-4 border border-red-900/30 mb-6 text-left text-xs sm:text-sm text-slate-200 space-y-3 leading-relaxed">
+                 <p>In Hard Mode, <strong className="text-yellow-400">suit lock gates are unlocked for you</strong>. If you make a mistake and play out of suit while holding that suit:</p>
                  <ul className="list-disc pl-5 text-red-300 space-y-1">
                    <li>The neural AI bots will catch you instantly!</li>
-                   <li>They will call "Renege!" and stop the hand.</li>
+                   <li>They will call "Renege!" and end the hand.</li>
                    <li>Opponents win <strong className="text-red-400">+2 Points</strong> immediately.</li>
                  </ul>
                </div>
                <div className="flex flex-col sm:flex-row gap-3">
                  <button 
                    onClick={() => { setShowWarningModal(false); playSound('click'); }}
-                   className="flex-1 bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-3 px-6 rounded-full border border-neutral-600 transition-all text-xs"
+                   className="flex-1 bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-2 px-4 rounded-full border border-neutral-600 transition-all text-xs"
                  >
                    GO BACK
                  </button>
                  <button 
                    onClick={confirmStartNewGame}
-                   className="flex-1 bg-gradient-to-r from-red-600 to-orange-700 text-white font-black py-3 px-6 rounded-full shadow-lg border border-red-400 hover:brightness-110 transition-all text-xs"
+                   className="flex-1 bg-gradient-to-r from-red-600 to-orange-700 text-white font-black py-2 px-4 rounded-full shadow-lg border border-red-400 hover:brightness-110 transition-all text-xs"
                  >
-                   I UNDERSTAND, DEAL IN!
+                   I UNDERSTAND, DEAL!
                  </button>
                </div>
             </div>
@@ -1644,34 +1659,34 @@ export default function App() {
         {/* STATS MODAL */}
         {showStatsModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
-            <div className="bg-gradient-to-b from-slate-900 via-neutral-950 to-black border-2 border-yellow-500/50 p-6 sm:p-10 rounded-3xl shadow-[0_0_80px_rgba(234,179,8,0.4)] text-center w-full max-w-sm pointer-events-auto relative">
-               <h2 className="text-2xl sm:text-3xl font-black text-yellow-400 uppercase tracking-widest mb-6">
+            <div className="bg-gradient-to-b from-slate-900 via-neutral-950 to-black border-2 border-yellow-500/50 p-6 rounded-3xl shadow-[0_0_80px_rgba(234,179,8,0.4)] text-center w-full max-w-sm pointer-events-auto relative">
+               <h2 className="text-xl sm:text-3xl font-black text-yellow-400 uppercase tracking-widest mb-4">
                  Player Stats
                </h2>
-               <div className="grid grid-cols-2 gap-4 text-slate-200 mb-8">
-                 <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex flex-col items-center shadow-inner">
-                   <span className="text-3xl sm:text-4xl font-black text-white">{stats.played}</span>
-                   <span className="text-[10px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Matches</span>
+               <div className="grid grid-cols-2 gap-3 text-slate-200 mb-6">
+                 <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex flex-col items-center">
+                   <span className="text-2xl sm:text-4xl font-black text-white">{stats.played}</span>
+                   <span className="text-[9px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Matches</span>
                  </div>
-                 <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex flex-col items-center shadow-inner">
-                   <span className="text-3xl sm:text-4xl font-black text-yellow-400">
+                 <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex flex-col items-center">
+                   <span className="text-2xl sm:text-4xl font-black text-yellow-400">
                      {stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0}%
                    </span>
-                   <span className="text-[10px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Win Rate</span>
+                   <span className="text-[9px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Win Rate</span>
                  </div>
-                 <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex flex-col items-center shadow-inner">
-                   <span className="text-3xl sm:text-4xl font-black text-green-400">{stats.won}</span>
-                   <span className="text-[10px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Wins</span>
+                 <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex flex-col items-center">
+                   <span className="text-2xl sm:text-4xl font-black text-green-400">{stats.won}</span>
+                   <span className="text-[9px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Wins</span>
                  </div>
-                 <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex flex-col items-center shadow-inner">
-                   <span className="text-3xl sm:text-4xl font-black text-red-400">{stats.lost}</span>
-                   <span className="text-[10px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Losses</span>
+                 <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex flex-col items-center">
+                   <span className="text-2xl sm:text-4xl font-black text-red-400">{stats.lost}</span>
+                   <span className="text-[9px] sm:text-xs uppercase tracking-widest text-slate-400 mt-1">Losses</span>
                  </div>
                </div>
-               <div className="flex flex-col gap-3">
+               <div className="flex flex-col gap-2">
                  <button 
                    onClick={() => { setShowStatsModal(false); playSound('click'); }}
-                   className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-black py-3 px-6 rounded-full shadow-lg border border-yellow-300 hover:brightness-110 transition-all text-sm tracking-wider"
+                   className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-black py-2.5 px-4 rounded-full shadow-lg border border-yellow-300 hover:brightness-110 transition-all text-xs tracking-wider"
                  >
                    CLOSE
                  </button>
@@ -1682,7 +1697,7 @@ export default function App() {
                      try { localStorage.setItem('euchre_stats', JSON.stringify(reset)); } catch(e) {}
                      playSound('card_flick');
                    }}
-                   className="w-full bg-transparent hover:bg-white/5 text-slate-400 font-bold py-3 px-6 rounded-full border border-slate-600 transition-all text-xs tracking-wider mt-2"
+                   className="w-full bg-transparent text-slate-400 font-bold py-1 px-4 text-[10px] tracking-wider mt-1"
                  >
                    RESET STATS
                  </button>
@@ -1705,22 +1720,26 @@ export default function App() {
       <div className="absolute inset-0 flex flex-col justify-between" style={getSafeAreaStyles()}>
         
         {/* Top Bar: Score, Partner Layout & Turn Notification */}
-        <div className="p-4 w-full flex justify-between items-start z-30 max-w-6xl mx-auto relative pointer-events-none">
+        <div className="p-2 xs:p-4 w-full flex justify-between items-start z-30 max-w-6xl mx-auto relative pointer-events-none">
           {/* Score Panel: Good Guys */}
-          <div className="bg-black/45 backdrop-blur-md border border-white/10 rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col min-w-[110px] pointer-events-auto transition-all">
-            <span className="font-black text-yellow-400 text-xs sm:text-base tracking-wide whitespace-nowrap">GOOD GUYS POINTS: {scores[0]}</span>
-            <span className="text-green-300 text-xs sm:text-sm font-extrabold mt-1 tracking-wider">TRICKS: {tricksTaken[0]}</span>
+          <div className="bg-black/45 backdrop-blur-md border border-white/10 rounded-xl xs:rounded-2xl p-1.5 xs:p-3 sm:p-4 shadow-xl flex flex-col min-w-[70px] xs:min-w-[110px] pointer-events-auto transition-all">
+            <span className="font-black text-yellow-400 text-[10px] xs:text-xs sm:text-base tracking-wide whitespace-nowrap">
+              <span className="hidden xs:inline">GOOD GUYS: </span>
+              <span className="xs:hidden">US: </span>
+              {scores[0]}
+            </span>
+            <span className="text-green-300 text-[8px] xs:text-xs sm:text-sm font-extrabold mt-0.5 tracking-wider">TRICKS: {tricksTaken[0]}</span>
             {scores[0] === 9 && (
-              <span className="text-[9px] sm:text-xs text-yellow-300 font-black tracking-widest mt-1.5 animate-pulse text-center bg-yellow-950/45 px-2 py-0.5 rounded border border-yellow-500/20">
-                🚜 IN THE BARN! 🐄
+              <span className="text-[7px] xs:text-[9px] sm:text-xs text-yellow-300 font-black tracking-widest mt-1 animate-pulse text-center bg-yellow-950/45 px-1 py-0.5 rounded border border-yellow-500/20">
+                BARN!
               </span>
             )}
           </div>
 
-          {/* Suit Led Indicator (Now safely in the top bar layout gap) */}
+          {/* Suit Led Indicator */}
           {trick.length > 0 && trick[0] && (
-            <div className="absolute top-1 sm:top-4 left-[24%] sm:left-[28%] flex flex-col items-center z-10 pointer-events-none transform -rotate-[10deg] animate-fade-in origin-top scale-[0.6] sm:scale-75 md:scale-90">
-              <div className="bg-black/90 border border-slate-400/60 text-slate-200 text-[12px] sm:text-xs font-black uppercase tracking-widest px-3 py-1 rounded-t-lg shadow-[0_-2px_10px_rgba(0,0,0,0.5)] mb-[-2px] z-10">
+            <div className="absolute top-1 sm:top-4 left-[24%] sm:left-[28%] flex flex-col items-center z-10 pointer-events-none transform -rotate-[10deg] animate-fade-in origin-top scale-[0.45] xs:scale-[0.55] sm:scale-75 md:scale-90">
+              <div className="bg-black/90 border border-slate-400/60 text-slate-200 text-xs font-black uppercase tracking-widest px-3 py-1 rounded-t-lg shadow-[0_-2px_10px_rgba(0,0,0,0.5)] mb-[-2px] z-10">
                 Suit Led
               </div>
               <div className="bg-gradient-to-br from-slate-200 via-slate-400 to-slate-500 p-[3px] sm:p-1 rounded-xl shadow-[0_8px_25px_rgba(148,163,184,0.4)]">
@@ -1743,25 +1762,25 @@ export default function App() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center z-0 pointer-events-auto">
             {/* Sitting Out view only triggers when NOT discarding, so partner dealers can perform their discards! */}
             {alonePlayer !== null && (alonePlayer + 2) % 4 === 2 && gameState !== 'discard' ? (
-              <div className="bg-black/55 backdrop-blur-md border border-yellow-500/30 rounded-2xl p-4 w-44 h-24 flex flex-col items-center justify-center text-center shadow-2xl animate-fade-in">
-                <span className="text-yellow-400 font-bold text-xs sm:text-sm tracking-widest uppercase">Sitting Out</span>
-                <span className="text-[10px] sm:text-xs text-slate-400 mt-1">Partner is playing Alone</span>
+              <div className="bg-black/55 backdrop-blur-md border border-yellow-500/30 rounded-xl p-2 w-28 h-16 sm:w-44 sm:h-24 flex flex-col items-center justify-center text-center shadow-2xl animate-fade-in">
+                <span className="text-yellow-400 font-bold text-[9px] sm:text-sm tracking-widest uppercase">Sitting Out</span>
+                <span className="text-[8px] sm:text-xs text-slate-400 mt-0.5">Partner is playing Alone</span>
               </div>
             ) : (
               <div className={getMakerFrameClasses(maker, 2, trump)}>
-                <div className={`flex -space-x-6 sm:-space-x-10 pt-4 sm:pt-6 pb-4 sm:pb-6 px-6 sm:px-10 relative ${getMakerInnerClasses(maker, 2, trump)}`}>
-                   {getRenderedHand(2).map((_, i) => <div className="shadow-[0_4px_10px_rgba(0,0,0,0.4)]" key={`partner_${i}`}>{renderCardBack(activeDeckStyle)}</div>)}
-                   {renderDealerCoin(dealer, 2, "-bottom-2 -right-6 sm:-bottom-4 sm:-right-8")}
+                <div className={`flex -space-x-5 xs:-space-x-8 sm:-space-x-10 pt-2 pb-2 px-3 sm:px-10 relative ${getMakerInnerClasses(maker, 2, trump)}`}>
+                   {getRenderedHand(2).map((_, i) => <div className="shadow-[0_2px_5px_rgba(0,0,0,0.4)]" key={`partner_${i}`}>{renderCardBack(activeDeckStyle)}</div>)}
+                   {renderDealerCoin(dealer, 2, "-bottom-2 -right-4 sm:-bottom-4 sm:-right-8")}
                 </div>
               </div>
             )}
             {/* Badge over cards */}
-            {renderPlayerBadge(currentPlayer, gameState, 2, "Your Partner", maker, trump, "absolute bottom-[-15px] left-1/2 transform -translate-x-1/2 z-50")}
+            {renderPlayerBadge(currentPlayer, gameState, 2, "Partner", maker, trump, "absolute bottom-[-10px] sm:bottom-[-15px] left-1/2 transform -translate-x-1/2 z-50")}
 
             {/* Player Bidding Decision Bubble */}
             {biddingDecisions[2] && (
-              <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 z-[80] flex items-center justify-center animate-bounce">
-                <div className={`backdrop-blur-md px-3 py-1.5 rounded-xl border shadow-xl text-[10px] sm:text-xs font-black tracking-wide text-center
+              <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 z-[80] flex items-center justify-center animate-bounce">
+                <div className={`backdrop-blur-md px-2 py-1 rounded-xl border shadow-xl text-[9px] sm:text-xs font-black tracking-wide text-center
                   ${biddingDecisions[2] === 'Pass' 
                     ? 'bg-black/90 border-slate-500/50 text-slate-300' 
                     : biddingDecisions[2].includes('Alone') 
@@ -1769,17 +1788,16 @@ export default function App() {
                       : 'bg-gradient-to-r from-green-700 to-teal-800 border-green-400 text-green-100'
                   }`}
                 >
-                  <span className="block font-medium text-[8px] uppercase opacity-75 leading-none mb-0.5 font-sans">Partner Bid</span>
                   <span className="uppercase">{biddingDecisions[2]}</span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Trump Indicator (Now safely in the top bar layout gap) */}
+          {/* Trump Indicator */}
           {trump && (
-            <div className="absolute top-1 sm:top-4 right-[24%] sm:right-[28%] flex flex-col items-center z-10 pointer-events-none transform rotate-[10deg] animate-fade-in origin-top scale-[0.6] sm:scale-75 md:scale-90">
-              <div className="bg-black/90 border border-yellow-500/60 text-yellow-400 text-[12px] sm:text-xs font-black uppercase tracking-widest px-3 py-1 rounded-t-lg shadow-[0_-2px_10px_rgba(0,0,0,0.5)] mb-[-2px] z-10">
+            <div className="absolute top-1 sm:top-4 right-[24%] sm:right-[28%] flex flex-col items-center z-10 pointer-events-none transform rotate-[10deg] animate-fade-in origin-top scale-[0.45] xs:scale-[0.55] sm:scale-75 md:scale-90">
+              <div className="bg-black/90 border border-yellow-500/60 text-yellow-400 text-xs font-black uppercase tracking-widest px-3 py-1 rounded-t-lg shadow-[0_-2px_10px_rgba(0,0,0,0.5)] mb-[-2px] z-10">
                 Trump
               </div>
               <div className="bg-gradient-to-br from-yellow-200 via-yellow-500 to-yellow-800 p-[3px] sm:p-1 rounded-xl shadow-[0_8px_25px_rgba(234,179,8,0.5)]">
@@ -1799,55 +1817,58 @@ export default function App() {
           )}
 
           {/* Score Panels - Bot Team */}
-          <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col text-right min-w-[110px] pointer-events-auto transition-all">
-            <span className="font-black text-red-400 text-xs sm:text-base tracking-wide whitespace-nowrap">BOT TEAM: {scores[1]}</span>
-            <span className="text-green-300 text-xs sm:text-sm font-extrabold mt-1 tracking-wider">TRICKS: {tricksTaken[1]}</span>
+          <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl xs:rounded-2xl p-1.5 xs:p-3 sm:p-4 shadow-xl flex flex-col text-right min-w-[70px] xs:min-w-[110px] pointer-events-auto transition-all">
+            <span className="font-black text-red-400 text-[10px] xs:text-xs sm:text-base tracking-wide whitespace-nowrap">
+              <span className="hidden xs:inline">BOT TEAM: </span>
+              <span className="xs:hidden">BOTS: </span>
+              {scores[1]}
+            </span>
+            <span className="text-green-300 text-[8px] xs:text-xs sm:text-sm font-extrabold mt-0.5 tracking-wider">TRICKS: {tricksTaken[1]}</span>
             {scores[1] === 9 && (
-              <span className="text-[9px] sm:text-xs text-red-300 font-black tracking-widest mt-1.5 animate-pulse text-center bg-red-950/45 px-2 py-0.5 rounded border border-red-500/20">
-                🚜 IN THE BARN! 🐄
+              <span className="text-[7px] xs:text-[9px] sm:text-xs text-red-300 font-black tracking-widest mt-1 animate-pulse text-center bg-red-950/45 px-1 py-0.5 rounded border border-red-500/20">
+                BARN!
               </span>
             )}
           </div>
         </div>
 
         {/* Game Table Area */}
-        <div className="absolute inset-0 flex items-center justify-center perspective-1000 z-10 pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center perspective-1000 z-10 pointer-events-none game-table-container">
           
           {/* Game Message Box */}
-          <div className="absolute top-[18%] sm:top-[22%] left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md flex justify-center pointer-events-none">
+          <div className="absolute top-[18%] xs:top-[20%] left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md flex justify-center pointer-events-none">
             {gameState !== 'finding_dealer' && gameState !== 'round_over' && gameState !== 'no_trump_passed' && gameState !== 'renege_caught' && (
-              <div className="text-white text-sm sm:text-base font-bold bg-black/60 px-6 py-2.5 rounded-full backdrop-blur-md border border-white/20 shadow-[0_4px_15px_rgba(0,0,0,0.6)] text-center w-full pointer-events-auto transition-all select-none">
+              <div className="text-white text-[11px] xs:text-sm sm:text-base font-bold bg-black/60 px-4 py-1.5 xs:px-6 xs:py-2.5 rounded-full backdrop-blur-md border border-white/20 shadow-[0_4px_15px_rgba(0,0,0,0.6)] text-center w-full pointer-events-auto transition-all select-none">
                 {message}
               </div>
             )}
           </div>
 
           {/* Table central felt highlight */}
-          <div className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-green-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute w-[200px] h-[200px] sm:w-[500px] sm:h-[500px] bg-green-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
           {/* Left Player (West) */}
-          <div className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 flex items-center justify-center z-20 pointer-events-auto">
+          <div className="absolute left-1 xs:left-3 sm:left-6 top-1/2 -translate-y-1/2 flex items-center justify-center z-20 pointer-events-auto">
             {/* Sitting Out view only triggers when NOT discarding, so partner dealers can perform their discards! */}
             {alonePlayer !== null && (alonePlayer + 2) % 4 === 1 && gameState !== 'discard' ? (
-              <div className="bg-black/55 backdrop-blur-md border border-yellow-500/30 rounded-2xl p-4 w-24 h-40 flex flex-col items-center justify-center text-center shadow-2xl rotate-90 animate-fade-in">
-                <span className="text-yellow-400 font-bold text-xs tracking-widest uppercase">Sitting Out</span>
-                <span className="text-[9px] text-slate-400 mt-1">Playing Alone</span>
+              <div className="bg-black/55 backdrop-blur-md border border-yellow-500/30 rounded-xl p-2 w-16 h-28 flex flex-col items-center justify-center text-center shadow-2xl rotate-90 animate-fade-in">
+                <span className="text-yellow-400 font-bold text-[8px] tracking-widest uppercase">Out</span>
               </div>
             ) : (
               <div className={getMakerFrameClasses(maker, 1, trump)}>
-                <div className={`flex flex-col -space-y-8 sm:-space-y-12 py-6 sm:py-10 px-4 sm:px-6 relative ${getMakerInnerClasses(maker, 1, trump)}`}>
-                   {getRenderedHand(1).map((_, i) => <div className="rotate-90 transform hover:-translate-x-2 transition-transform shadow-[4px_0_10px_rgba(0,0,0,0.4)]" key={`bot1_${i}`}>{renderCardBack(activeDeckStyle)}</div>)}
-                   {renderDealerCoin(dealer, 1, "-bottom-4 -right-4 sm:-bottom-6 sm:-right-6")}
+                <div className={`flex flex-col -space-y-8 sm:-space-y-12 py-3 sm:py-10 px-2 sm:px-6 relative ${getMakerInnerClasses(maker, 1, trump)}`}>
+                   {getRenderedHand(1).map((_, i) => <div className="rotate-90 transform shadow-[2px_0_5px_rgba(0,0,0,0.4)]" key={`bot1_${i}`}>{renderCardBack(activeDeckStyle)}</div>)}
+                   {renderDealerCoin(dealer, 1, "-bottom-2 -right-2 sm:-bottom-6 sm:-right-6")}
                 </div>
               </div>
             )}
             {/* Badge over cards */}
-            {renderPlayerBadge(currentPlayer, gameState, 1, "Bot 1", maker, trump, "absolute left-8 sm:left-14 -rotate-90 z-50")}
+            {renderPlayerBadge(currentPlayer, gameState, 1, "Bot 1", maker, trump, "absolute left-5 xs:left-8 sm:left-14 -rotate-90 z-50")}
 
             {/* Player Bidding Decision Bubble */}
             {biddingDecisions[1] && (
-              <div className="absolute left-24 sm:left-36 top-1/2 -translate-y-1/2 z-[80] flex items-center justify-center animate-bounce">
-                <div className={`backdrop-blur-md px-3 py-1.5 rounded-xl border shadow-xl text-[10px] sm:text-xs font-black tracking-wide text-center
+              <div className="absolute left-16 xs:left-20 sm:left-36 top-1/2 -translate-y-1/2 z-[80] flex items-center justify-center animate-bounce">
+                <div className={`backdrop-blur-md px-2 py-1 rounded-xl border shadow-xl text-[9px] sm:text-xs font-black tracking-wide text-center
                   ${biddingDecisions[1] === 'Pass' 
                     ? 'bg-black/90 border-slate-500/50 text-slate-300' 
                     : biddingDecisions[1].includes('Alone') 
@@ -1855,7 +1876,6 @@ export default function App() {
                       : 'bg-gradient-to-r from-green-700 to-teal-800 border-green-400 text-green-100'
                   }`}
                 >
-                  <span className="block font-medium text-[8px] uppercase opacity-75 leading-none mb-0.5">Bot 1 Bid</span>
                   <span className="uppercase">{biddingDecisions[1]}</span>
                 </div>
               </div>
@@ -1863,28 +1883,27 @@ export default function App() {
           </div>
 
           {/* Right Player (East) */}
-          <div className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-center z-20 pointer-events-auto">
+          <div className="absolute right-1 xs:right-3 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-center z-20 pointer-events-auto">
             {/* Sitting Out view only triggers when NOT discarding, so partner dealers can perform their discards! */}
             {alonePlayer !== null && (alonePlayer + 2) % 4 === 3 && gameState !== 'discard' ? (
-              <div className="bg-black/55 backdrop-blur-md border border-yellow-500/30 rounded-2xl p-4 w-44 h-24 flex flex-col items-center justify-center text-center shadow-2xl -rotate-90 animate-fade-in">
-                <span className="text-yellow-400 font-bold text-xs tracking-widest uppercase">Sitting Out</span>
-                <span className="text-[9px] text-slate-400 mt-1">Playing Alone</span>
+              <div className="bg-black/55 backdrop-blur-md border border-yellow-500/30 rounded-xl p-2 w-16 h-28 flex flex-col items-center justify-center text-center shadow-2xl -rotate-90 animate-fade-in">
+                <span className="text-yellow-400 font-bold text-[8px] tracking-widest uppercase">Out</span>
               </div>
             ) : (
               <div className={getMakerFrameClasses(maker, 3, trump)}>
-                <div className={`flex flex-col -space-y-8 sm:-space-y-12 py-6 sm:py-10 px-4 sm:px-6 relative ${getMakerInnerClasses(maker, 3, trump)}`}>
-                   {getRenderedHand(3).map((_, i) => <div className="-rotate-90 transform hover:translate-x-2 transition-transform shadow-[-4px_0_10px_rgba(0,0,0,0.4)]" key={`bot2_${i}`}>{renderCardBack(activeDeckStyle)}</div>)}
-                   {renderDealerCoin(dealer, 3, "-bottom-4 -left-4 sm:-bottom-6 sm:-left-6")}
+                <div className={`flex flex-col -space-y-8 sm:-space-y-12 py-3 sm:py-10 px-2 sm:px-6 relative ${getMakerInnerClasses(maker, 3, trump)}`}>
+                   {getRenderedHand(3).map((_, i) => <div className="-rotate-90 transform shadow-[-2px_0_5px_rgba(0,0,0,0.4)]" key={`bot2_${i}`}>{renderCardBack(activeDeckStyle)}</div>)}
+                   {renderDealerCoin(dealer, 3, "-bottom-2 -left-2 sm:-bottom-6 sm:-left-6")}
                 </div>
               </div>
             )}
             {/* Badge over cards */}
-            {renderPlayerBadge(currentPlayer, gameState, 3, "Bot 2", maker, trump, "absolute right-8 sm:right-14 rotate-90 z-50")}
+            {renderPlayerBadge(currentPlayer, gameState, 3, "Bot 2", maker, trump, "absolute right-5 xs:right-8 sm:right-14 rotate-90 z-50")}
 
             {/* Player Bidding Decision Bubble */}
             {biddingDecisions[3] && (
-              <div className="absolute right-24 sm:right-36 top-1/2 -translate-y-1/2 z-[80] flex items-center justify-center animate-bounce">
-                <div className={`backdrop-blur-md px-3 py-1.5 rounded-xl border shadow-xl text-[10px] sm:text-xs font-black tracking-wide text-center
+              <div className="absolute right-16 xs:right-20 sm:right-36 top-1/2 -translate-y-1/2 z-[80] flex items-center justify-center animate-bounce">
+                <div className={`backdrop-blur-md px-2 py-1 rounded-xl border shadow-xl text-[9px] sm:text-xs font-black tracking-wide text-center
                   ${biddingDecisions[3] === 'Pass' 
                     ? 'bg-black/90 border-slate-500/50 text-slate-300' 
                     : biddingDecisions[3].includes('Alone') 
@@ -1892,7 +1911,6 @@ export default function App() {
                       : 'bg-gradient-to-r from-green-700 to-teal-800 border-green-400 text-green-100'
                   }`}
                 >
-                  <span className="block font-medium text-[8px] uppercase opacity-75 leading-none mb-0.5">Bot 2 Bid</span>
                   <span className="uppercase">{biddingDecisions[3]}</span>
                 </div>
               </div>
@@ -1900,37 +1918,35 @@ export default function App() {
           </div>
 
           {/* Center Play Area */}
-          <div className="w-44 h-44 sm:w-60 sm:h-60 rounded-full border border-white/10 bg-black/10 shadow-[inset_0_0_50px_rgba(0,0,0,0.5)] relative flex items-center justify-center backdrop-blur-sm z-10 pointer-events-auto">
+          <div className="w-32 h-32 xs:w-44 xs:h-44 sm:w-60 sm:h-60 rounded-full border border-white/10 bg-black/10 shadow-[inset_0_0_50px_rgba(0,0,0,0.5)] relative flex items-center justify-center backdrop-blur-sm z-10 pointer-events-auto game-table-felt">
             
             {/* Finding Dealer Overlay & Central Elements */}
             {gameState === 'finding_dealer' && (
               <>
                 {findingDealerPhase === 'initial_pause' && (
-                  <div className="absolute z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md border border-yellow-500/50 p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(234,179,8,0.4)] text-center w-64 sm:w-80 animate-fade-in">
-                     <h2 className="text-2xl sm:text-3xl font-black text-yellow-400 mb-2 uppercase tracking-wider text-center">
+                  <div className="absolute z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md border border-yellow-500/50 p-4 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(234,179,8,0.4)] text-center w-48 xs:w-64 sm:w-80 animate-fade-in">
+                     <h2 className="text-sm xs:text-xl sm:text-3xl font-black text-yellow-400 mb-1 uppercase tracking-wider text-center">
                        First Jack Deals!
                      </h2>
-                     <p className="text-sm sm:text-base text-white font-medium text-center">Dealing cards to find the first dealer...</p>
+                     <p className="text-[10px] xs:text-xs sm:text-base text-white font-medium text-center">Dealing cards to find dealer...</p>
                   </div>
                 )}
 
                 {findingDealerPhase === 'dealing' && (
                   <div className="absolute z-0 flex flex-col items-center justify-center animate-fade-in">
                     {/* Large Dealer Coin in Center */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_6px_8px_rgba(255,255,255,1),inset_0_-6px_8px_rgba(0,0,0,0.2)] border-[5px] border-gray-900 relative">
-                       <div className="absolute inset-[2px] border-[1px] border-dotted border-gray-400 rounded-full opacity-60"></div>
-                       <span className="text-gray-900 font-black text-sm sm:text-base tracking-widest leading-none">DEALER</span>
+                    <div className="w-14 h-14 sm:w-24 sm:h-24 bg-white rounded-full flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_6px_8px_rgba(255,255,255,1)] border-2 sm:border-[5px] border-gray-900 relative">
+                       <span className="text-gray-900 font-black text-[9px] sm:text-base tracking-widest leading-none">DEALER</span>
                     </div>
                   </div>
                 )}
 
-                {/* Glowing Announcement Box is hidden during 'highlighting_jack' to avoid covering the player cards! */}
                 {findingDealerPhase === 'found' && (
-                  <div className="absolute z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md border border-green-500/50 p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(34,197,94,0.4)] text-center w-64 sm:w-80 animate-fade-in animate-pulse">
-                     <h2 className="text-2xl sm:text-3xl font-black text-green-400 mb-2 uppercase tracking-wider text-center">
-                       Dealer Selected
+                  <div className="absolute z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md border border-green-500/50 p-4 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(34,197,94,0.4)] text-center w-48 xs:w-64 sm:w-80 animate-fade-in animate-pulse">
+                     <h2 className="text-sm xs:text-xl sm:text-3xl font-black text-green-400 mb-1 uppercase tracking-wider text-center">
+                       Dealer Found
                      </h2>
-                     <p className="text-sm sm:text-base text-white font-medium text-center">{message}</p>
+                     <p className="text-[10px] xs:text-xs sm:text-base text-white font-medium text-center">{message}</p>
                   </div>
                 )}
               </>
@@ -1939,7 +1955,7 @@ export default function App() {
             {/* Shuffling Transition Visual Deck */}
             {gameState === 'dealing_cards' && dealAnimationStep === 'shuffling' && (
               <div className="absolute z-40 flex items-center justify-center w-full h-full">
-                <div className="relative w-16 h-24 sm:w-24 sm:h-36">
+                <div className="relative w-11 h-16 xs:w-14 xs:h-20 sm:w-24 sm:h-36">
                   <div className="absolute inset-0 shadow-lg transform -translate-y-1">{renderCardBack(activeDeckStyle)}</div>
                   <div className="absolute inset-0 shadow-lg animate-shuffle-left">{renderCardBack(activeDeckStyle)}</div>
                   <div className="absolute inset-0 shadow-lg animate-shuffle-right">{renderCardBack(activeDeckStyle)}</div>
@@ -1950,7 +1966,7 @@ export default function App() {
             {/* Distributing Cards Visual Stack */}
             {gameState === 'dealing_cards' && dealAnimationStep === 'distributing' && (
               <div className="absolute z-40 flex items-center justify-center w-full h-full">
-                <div className="relative w-16 h-24 sm:w-24 sm:h-36 shadow-2xl">
+                <div className="relative w-11 h-16 xs:w-14 xs:h-20 sm:w-24 sm:h-36 shadow-2xl">
                   {renderCardBack(activeDeckStyle)}
                 </div>
               </div>
@@ -1959,10 +1975,10 @@ export default function App() {
             {/* 3D Flipping Up-Card Step */}
             {gameState === 'dealing_cards' && dealAnimationStep === 'flipping' && upCard && (
               <div className="absolute z-50 flex flex-col items-center justify-center">
-                <span className="text-[10px] sm:text-xs font-bold text-yellow-400 uppercase tracking-widest mb-2 drop-shadow-md">
+                <span className="text-[8px] xs:text-[10px] sm:text-xs font-bold text-yellow-400 uppercase tracking-widest mb-1 drop-shadow-md">
                   Up Card Flip
                 </span>
-                <div className="perspective-1000 w-16 h-24 sm:w-24 sm:h-36 shadow-2xl">
+                <div className="perspective-1000 w-11 h-16 xs:w-14 xs:h-20 sm:w-24 sm:h-36 shadow-2xl">
                   <div 
                     className={`relative w-full h-full duration-700 ease-out transform-style-3d ${isUpCardFlipped ? 'rotate-y-0' : 'rotate-y-180'}`}
                   >
@@ -1982,10 +1998,11 @@ export default function App() {
             {/* Active Trick OR Dealing Sequence Cards */}
             {(gameState === 'finding_dealer' ? dealerSequence : trick).map((play) => {
                let posClass = "";
-               if (play.player === 0) posClass = "translate-y-14 sm:translate-y-24 z-40";
-               if (play.player === 1) posClass = "-translate-x-16 sm:-translate-x-28 z-20 -rotate-[15deg]";
-               if (play.player === 2) posClass = "-translate-y-14 sm:-translate-y-24 z-10 rotate-[8deg]";
-               if (play.player === 3) posClass = "translate-x-16 sm:translate-x-28 z-30 rotate-[15deg]";
+               // Shift plays slightly closer in center on tiny viewports
+               if (play.player === 0) posClass = "translate-y-8 xs:translate-y-12 sm:translate-y-24 z-40";
+               if (play.player === 1) posClass = "-translate-x-10 xs:-translate-x-14 sm:-translate-x-28 z-20 -rotate-[15deg]";
+               if (play.player === 2) posClass = "-translate-y-8 xs:-translate-y-12 sm:-translate-y-24 z-10 rotate-[8deg]";
+               if (play.player === 3) posClass = "translate-x-10 xs:translate-x-14 sm:translate-x-28 z-30 rotate-[15deg]";
                
                const isWinningJack = gameState === 'finding_dealer' && 
                                      play.card.rank === 'J' && 
@@ -1997,8 +2014,8 @@ export default function App() {
                    key={play.player} 
                    className={`absolute ${posClass} transition-all duration-300 ease-out
                      ${isWinningJack 
-                       ? 'ring-4 ring-yellow-400 rounded-xl shadow-[0_0_40px_rgba(234,179,8,1)] scale-110 z-50 animate-pulse' 
-                       : 'shadow-[0_10px_20px_rgba(0,0,0,0.5)]'}`}
+                       ? 'ring-2 sm:ring-4 ring-yellow-400 rounded-lg sm:rounded-xl shadow-[0_0_20px_rgba(234,179,8,1)] scale-105 z-50 animate-pulse' 
+                       : 'shadow-[0_5px_10px_rgba(0,0,0,0.5)]'}`}
                  >
                    {renderCard(play.card)}
                  </div>
@@ -2007,46 +2024,40 @@ export default function App() {
 
             {/* Funny "No Trump Passed" Redealing Transition Overlay */}
             {gameState === 'no_trump_passed' && noTrumpMessage && (
-              <div className="absolute z-50 flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-yellow-500/40 p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(234,179,8,0.4)] text-center w-72 sm:w-[22rem] animate-fade-in">
-                 <div className="text-5xl mb-3 animate-bounce select-none">🐔💨💤</div>
-                 <h2 className="text-xl sm:text-2xl font-black text-yellow-400 mb-2 uppercase tracking-wide leading-tight text-center">
+              <div className="absolute z-50 flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-yellow-500/40 p-4 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(234,179,8,0.4)] text-center w-64 sm:w-[22rem] animate-fade-in">
+                 <div className="text-3xl sm:text-5xl mb-2 animate-bounce select-none">🐔💨💤</div>
+                 <h2 className="text-sm sm:text-2xl font-black text-yellow-400 mb-1 uppercase tracking-wide leading-tight text-center">
                    {noTrumpMessage.title}
                  </h2>
-                 <p className="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed text-center">
+                 <p className="text-[10px] sm:text-sm text-slate-200 font-medium leading-relaxed text-center">
                    {noTrumpMessage.desc}
                  </p>
-                 <div className="mt-4 flex items-center gap-1 bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-[9px] uppercase tracking-widest font-black px-3 py-1 rounded-full animate-pulse">
-                    <span>Passing Dealer Coin</span>
-                    <span className="animate-ping">⚪</span>
+                 <div className="mt-2.5 flex items-center gap-1 bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-[8px] uppercase tracking-widest font-black px-2 py-0.5 rounded-full animate-pulse">
+                    <span>Re-shuffling...</span>
                  </div>
               </div>
             )}
 
-            {/* Round Over Overlay - Upgraded Flashy Euchre Display */}
+            {/* Round Over Overlay */}
             {gameState === 'round_over' && (
-              <div className={`absolute z-50 flex flex-col items-center justify-center p-6 sm:p-8 rounded-3xl text-center w-72 sm:w-[22rem] transition-all duration-500 backdrop-blur-md border
+              <div className={`absolute z-50 flex flex-col items-center justify-center p-4 sm:p-8 rounded-3xl text-center w-64 sm:w-[22rem] transition-all duration-500 backdrop-blur-md border
                 ${roundResult.isEuchre 
                   ? 'bg-gradient-to-br from-[#6b0202] via-[#210202] to-black border-red-500 euchred-overlay-flashy' 
                   : 'bg-black/90 border-white/20 shadow-[0_0_40px_rgba(0,0,0,0.8)]'}`}
               >
                  {roundResult.isEuchre && (
-                   <div className="text-4xl mb-3 animate-bounce select-none">⚡💥💀</div>
+                   <div className="text-2xl sm:text-4xl mb-2 animate-bounce select-none">⚡💥💀</div>
                  )}
-                 <h2 className={`text-2xl sm:text-4xl font-black tracking-wider mb-2
+                 <h2 className={`text-base sm:text-4xl font-black tracking-wider mb-1
                    ${roundResult.isEuchre 
-                     ? 'text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.95)]' 
+                     ? 'text-red-500' 
                      : (roundResult.title.includes('WON') || roundResult.title.includes('YOUR') || roundResult.title.includes('SUCCESS') ? 'text-yellow-400' : 'text-red-400')}`}
                >
                  {roundResult.title}
                </h2>
-               <p className={`text-sm sm:text-base font-bold text-white leading-relaxed ${roundResult.isEuchre ? 'drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]' : ''}`}>
+               <p className="text-xs sm:text-base font-bold text-white leading-relaxed">
                  {roundResult.desc}
                </p>
-               {roundResult.isEuchre && (
-                 <div className="mt-4 bg-yellow-500 text-black text-[10px] sm:text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full shadow-[0_4px_10px_rgba(234,179,8,0.3)] animate-pulse">
-                   Double Points Added!
-                 </div>
-               )}
               </div>
             )}
 
@@ -2054,16 +2065,15 @@ export default function App() {
             {trick.length === 0 && !['round_over', 'finding_dealer', 'no_trump_passed', 'dealing_cards', 'renege_caught'].includes(gameState) && (
               <div className="flex flex-col items-center z-10">
                 {['bid1', 'bid2', 'discard'].includes(gameState) && upCard && (
-                   <div className="mb-4 text-center animate-fade-in-up">
-                     <div className="text-xs sm:text-sm font-semibold text-green-200 mb-2 uppercase tracking-wider drop-shadow-md">Up Card</div>
-                     <div className="shadow-[0_10px_30px_rgba(0,0,0,0.6)] rounded-xl transform hover:scale-105 transition-transform">
+                   <div className="mb-1 text-center animate-fade-in-up scale-[0.9] sm:scale-100">
+                     <div className="shadow-[0_10px_30px_rgba(0,0,0,0.6)] rounded-lg">
                         {renderCard(upCard)}
                      </div>
                    </div>
                 )}
                 {gameState === 'bid2' && !upCard && (
-                  <div className="text-green-200 text-sm italic border border-white/20 bg-black/40 backdrop-blur-md px-6 py-3 rounded-full shadow-lg">
-                    Up card passed & discarded.
+                  <div className="text-green-200 text-[10px] xs:text-xs italic border border-white/10 bg-black/40 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg">
+                    Passed.
                   </div>
                 )}
               </div>
@@ -2074,16 +2084,16 @@ export default function App() {
         {/* FLASHY CHEATER / RENEGE INTERSTITIAL MODAL */}
         {gameState === 'renege_caught' && currentRenegeQuote && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fade-in">
-            <div className="bg-gradient-to-br from-[#800] via-[#300] to-black border-4 border-red-500 euchred-overlay-flashy p-8 sm:p-12 rounded-3xl shadow-[0_0_60px_rgba(239,68,68,0.8)] text-center w-full max-w-md pointer-events-auto">
-               <div className="text-6xl mb-4 animate-bounce">🚨🫵🤖</div>
-               <h2 className="text-3xl sm:text-4xl font-black text-red-500 uppercase tracking-widest mb-4 drop-shadow-[0_0_15px_rgba(239,68,68,0.9)] leading-tight">
+            <div className="bg-gradient-to-br from-[#800] via-[#300] to-black border-4 border-red-500 euchred-overlay-flashy p-6 sm:p-12 rounded-3xl shadow-[0_0_60px_rgba(239,68,68,0.8)] text-center w-full max-w-sm pointer-events-auto">
+               <div className="text-4xl sm:text-6xl mb-3 animate-bounce">🚨🫵🤖</div>
+               <h2 className="text-xl sm:text-3xl font-black text-red-500 uppercase tracking-widest mb-3 drop-shadow-[0_0_10px_rgba(239,68,68,0.95)]">
                  {currentRenegeQuote.title}
                </h2>
-               <p className="text-base sm:text-lg text-slate-100 font-extrabold mb-6 leading-relaxed">
+               <p className="text-xs sm:text-base text-slate-100 font-extrabold mb-4 leading-relaxed">
                  {currentRenegeQuote.desc}
                </p>
-               <div className="bg-yellow-500 text-black text-xs sm:text-sm font-black tracking-widest uppercase py-2.5 px-6 rounded-full shadow-lg inline-block animate-pulse">
-                 OPPONENTS: +2 POINTS! 💸
+               <div className="bg-yellow-500 text-black text-[10px] sm:text-xs font-black tracking-widest uppercase py-1.5 px-4 rounded-full shadow-lg inline-block animate-pulse">
+                 BOTS GET +2 PTS!
                </div>
             </div>
           </div>
@@ -2091,10 +2101,10 @@ export default function App() {
 
         {/* Funny Early Round Skip / Fast-Forward Button */}
         {isHandDecided() && funnySkipText && (
-          <div className="absolute bottom-28 left-4 sm:bottom-36 sm:left-8 z-[80] pointer-events-auto animate-fade-in">
+          <div className="absolute bottom-24 left-3 xs:bottom-28 xs:left-4 sm:bottom-36 sm:left-8 z-[80] pointer-events-auto animate-fade-in">
             <button 
               onClick={handleEarlyTermination}
-              className="bg-gradient-to-r from-red-600 via-orange-600 to-red-700 hover:from-red-500 hover:to-orange-500 text-white font-extrabold py-2.5 px-5 sm:py-3.5 sm:px-7 rounded-full border border-red-400/40 shadow-[0_0_20px_rgba(239,68,68,0.5)] hover:shadow-[0_0_30px_rgba(249,115,22,0.7)] text-xs sm:text-sm tracking-widest transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2 uppercase animate-pulse"
+              className="bg-gradient-to-r from-red-600 via-orange-600 to-red-700 hover:from-red-500 hover:to-orange-500 text-white font-extrabold py-1.5 px-3.5 sm:py-3.5 sm:px-7 rounded-full border border-red-400/40 shadow-lg text-[9px] sm:text-xs tracking-wider transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-1.5 uppercase"
             >
               <span>{funnySkipText}</span>
             </button>
@@ -2102,41 +2112,40 @@ export default function App() {
         )}
 
         {/* User Actions & Hand (Bottom) */}
-        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-24 pb-4 sm:pb-6 px-4 flex flex-col items-center z-30 pointer-events-none">
+        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/95 via-black/50 to-transparent pt-12 pb-2 xs:pb-4 sm:pb-6 px-4 flex flex-col items-center z-30 pointer-events-none">
           
           {/* Contextual Action Buttons */}
-          <div className="flex flex-col items-center gap-3 mb-3 relative w-full pointer-events-auto">
-            {/* Go Alone Luxury Toggle Option */}
+          <div className="flex flex-col items-center gap-2 mb-2 relative w-full pointer-events-auto">
+            {/* Go Alone Toggle Option */}
             {currentPlayer === 0 && ['bid1', 'bid2'].includes(gameState) && (
-              <label className="flex items-center gap-2 cursor-pointer bg-black/60 px-5 py-2 rounded-full border border-yellow-500/30 text-xs sm:text-sm font-bold text-yellow-400 select-none animate-pulse hover:border-yellow-400 transition-all duration-300">
+              <label className="flex items-center gap-1.5 cursor-pointer bg-black/60 px-4 py-1.5 rounded-full border border-yellow-500/30 text-[10px] sm:text-sm font-bold text-yellow-400 select-none hover:border-yellow-400 transition-all">
                 <input 
                   type="checkbox" 
                   checked={goAlone} 
                   disabled={isBiddingPaused}
                   onChange={(e) => { setGoAlone(e.target.checked); playSound('click'); }} 
-                  className="accent-yellow-500 w-4 h-4 rounded cursor-pointer"
+                  className="accent-yellow-500 w-3.5 h-3.5 rounded cursor-pointer"
                 />
-                <span className="tracking-wide">GO ALONE 🚀 (4 PTS IF MARCHE)</span>
+                <span className="tracking-wide">GO ALONE 🚀</span>
               </label>
             )}
 
             {currentPlayer === 0 && gameState === 'bid1' && (
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 <button 
                   onClick={() => {
                     const canOrderUp = upCard && hands[0].some(c => getEffectiveSuit(c, upCard.suit) === upCard.suit);
                     if (canOrderUp) handleBid(0, 'order_up', null, goAlone);
                   }} 
                   disabled={isBiddingPaused || !(upCard && hands[0].some(c => getEffectiveSuit(c, upCard.suit) === upCard.suit))}
-                  title={!(upCard && hands[0].some(c => getEffectiveSuit(c, upCard.suit) === upCard.suit)) ? `You need at least one ${upCard?.suit} in your hand to order it up!` : ''}
-                  className={`bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-bold py-3 px-8 rounded-full shadow-[0_4px_15px_rgba(234,179,8,0.4)] transition-transform hover:scale-105 active:scale-95 border border-yellow-200 ${isBiddingPaused || !(upCard && hands[0].some(c => getEffectiveSuit(c, upCard.suit) === upCard.suit)) ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
+                  className={`bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-black py-2 px-5 sm:py-3 sm:px-8 rounded-full shadow-md text-xs transition-transform hover:scale-105 active:scale-95 border border-yellow-200 ${isBiddingPaused || !(upCard && hands[0].some(c => getEffectiveSuit(c, upCard.suit) === upCard.suit)) ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
                 >
                   Order Up {upCard?.suit} {goAlone && "Alone"}
                 </button>
                 <button 
                   onClick={() => handleBid(0, 'pass')} 
                   disabled={isBiddingPaused}
-                  className={`bg-gradient-to-b from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 text-white font-bold py-3 px-8 rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.4)] transition-transform hover:scale-105 active:scale-95 border-slate-500 ${isBiddingPaused ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`bg-gradient-to-b from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 text-white font-black py-2 px-5 sm:py-3 sm:px-8 rounded-full shadow-md text-xs transition-transform hover:scale-105 active:scale-95 border-slate-500 ${isBiddingPaused ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   Pass
                 </button>
@@ -2144,21 +2153,21 @@ export default function App() {
             )}
 
             {currentPlayer === 0 && gameState === 'bid2' && (
-              <div className="flex flex-wrap justify-center gap-3 max-w-2xl">
+              <div className="flex flex-wrap justify-center gap-2 max-w-md">
                 {SUITS.filter(s => s !== upCard?.suit).map(suit => (
                   <button 
                     key={suit} 
                     onClick={() => handleBid(0, 'call', suit, goAlone)}
                     disabled={isBiddingPaused}
-                    className={`bg-gradient-to-b from-white to-gray-200 hover:from-white hover:to-white text-black font-bold py-3 px-6 rounded-full shadow-[0_4px_15px_rgba(255,255,255,0.2)] transition-transform hover:scale-105 active:scale-95 border-gray-300 flex items-center gap-2 ${isBiddingPaused ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`bg-gradient-to-b from-white to-gray-200 hover:from-white hover:to-white text-black font-black py-1.5 px-4 sm:py-2.5 sm:px-6 rounded-full shadow-md text-[11px] sm:text-sm transition-transform hover:scale-105 active:scale-95 border border-gray-300 flex items-center gap-1 ${isBiddingPaused ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    Make <span className={`text-2xl ${getSuitColor(suit)} leading-none drop-shadow-sm`}>{suit}</span> {goAlone && "Alone"}
+                    Make <span className={`text-base sm:text-2xl ${getSuitColor(suit)} leading-none`}>{suit}</span> {goAlone && "Alone"}
                   </button>
                 ))}
                 <button 
                   onClick={() => handleBid(0, 'pass')} 
                   disabled={isBiddingPaused}
-                  className={`bg-gradient-to-b from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 text-white font-bold py-3 px-8 rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.4)] transition-transform hover:scale-105 active:scale-95 border-slate-500 sm:ml-4 ${isBiddingPaused ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`bg-gradient-to-b from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 text-white font-black py-1.5 px-4 sm:py-2.5 sm:px-6 rounded-full shadow-md text-[11px] sm:text-sm transition-transform hover:scale-105 active:scale-95 border-slate-500 ${isBiddingPaused ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   Pass
                 </button>
@@ -2166,27 +2175,27 @@ export default function App() {
             )}
 
             {currentPlayer === 0 && gameState === 'discard' && dealer === 0 && (
-               <div className="text-yellow-400 font-bold bg-black/60 border border-yellow-400/30 px-6 py-3 rounded-full shadow-[0_0_15px_rgba(234,179,8,0.3)] animate-pulse">
-                  Select a card from your hand to discard.
+               <div className="text-yellow-400 font-extrabold bg-black/60 border border-yellow-400/30 px-4 py-1.5 rounded-full text-xs shadow-md animate-pulse">
+                  Discard a card from your hand below.
                </div>
             )}
           </div>
 
           {/* User Hand */}
-          <div className="flex flex-col items-center relative w-full max-w-3xl pointer-events-auto">
+          <div className="flex flex-col items-center relative w-full max-w-3xl pointer-events-auto fanned-hand-container">
              
              <div className={getMakerFrameClasses(maker, 0, trump)}>
                {/* Render Hand with radial arc effect */}
-               <div className={`flex justify-center items-end h-36 sm:h-48 pt-6 sm:pt-10 pb-6 sm:pb-8 px-6 sm:px-12 relative w-max mx-auto ${getMakerInnerClasses(maker, 0, trump)}`}>
+               <div className={`flex justify-center items-end h-24 xs:h-28 sm:h-48 pt-2 pb-2 px-4 sm:px-12 relative w-max mx-auto ${getMakerInnerClasses(maker, 0, trump)}`}>
                  
                  {/* Badge over user cards */}
-                 {renderPlayerBadge(currentPlayer, gameState, 0, "You", maker, trump, "absolute -bottom-4 sm:-bottom-6 left-1/2 transform -translate-x-1/2 z-[60]")}
-                 {renderDealerCoin(dealer, 0, "top-4 right-2 sm:top-6 sm:right-4")}
+                 {renderPlayerBadge(currentPlayer, gameState, 0, "You", maker, trump, "absolute -bottom-3 sm:-bottom-6 left-1/2 transform -translate-x-1/2 z-[60]")}
+                 {renderDealerCoin(dealer, 0, "top-2 right-1 sm:top-6 sm:right-4")}
 
                  {/* Player Bidding Decision Bubble */}
                  {biddingDecisions[0] && (
-                   <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 z-[80] flex items-center justify-center animate-bounce">
-                     <div className={`backdrop-blur-md px-3 py-1.5 rounded-xl border shadow-xl text-[10px] sm:text-xs font-black tracking-wide text-center
+                   <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 z-[80] flex items-center justify-center animate-bounce">
+                     <div className={`backdrop-blur-md px-2 py-1 rounded-xl border shadow-xl text-[9px] sm:text-xs font-black tracking-wide text-center
                        ${biddingDecisions[0] === 'Pass' 
                          ? 'bg-black/90 border-slate-500/50 text-slate-300' 
                          : biddingDecisions[0].includes('Alone') 
@@ -2194,7 +2203,6 @@ export default function App() {
                            : 'bg-gradient-to-r from-green-700 to-teal-800 border-green-400 text-green-100'
                        }`}
                      >
-                       <span className="block font-medium text-[8px] uppercase opacity-75 leading-none mb-0.5 font-sans">Your Bid</span>
                        <span className="uppercase">{biddingDecisions[0]}</span>
                      </div>
                    </div>
@@ -2218,14 +2226,14 @@ export default function App() {
                      // Calculate arc styling for the cards to make them fanning out realistically
                      const totalCards = getRenderedHand(0).length;
                      const offset = index - (totalCards - 1) / 2;
-                     const rotation = offset * 6; // Spread angle
-                     const translateY = Math.abs(offset) * 8; // Vertical drop for edge cards
+                     const rotation = offset * 5; // Spread angle
+                     const translateY = Math.abs(offset) * 4; // Vertical drop for edge cards
                      const zIndex = 10 + index; // Layer properly
 
                      return (
                        <div 
                          key={card.id} 
-                         className="origin-bottom -ml-4 sm:-ml-6 first:ml-0 transition-transform duration-300 ease-out hover:-translate-y-6 sm:hover:-translate-y-8 z-10 hover:z-50"
+                         className="origin-bottom -ml-4 xs:-ml-6 first:ml-0 transition-transform duration-300 ease-out hover:-translate-y-6 sm:hover:-translate-y-8 z-10 hover:z-50"
                          style={{ 
                            transform: `rotate(${rotation}deg) translateY(${translateY}px)`,
                            zIndex: zIndex
@@ -2284,13 +2292,13 @@ export default function App() {
                    </div>
                  )}
                </div>
-               <h2 className={`text-5xl sm:text-7xl font-black mb-4 drop-shadow-lg mt-8 sm:mt-10 ${scores[0] >= 10 ? 'text-yellow-400' : 'text-blue-300'}`}>
+               <h2 className={`text-4xl sm:text-7xl font-black mb-4 drop-shadow-lg mt-8 sm:mt-10 ${scores[0] >= 10 ? 'text-yellow-400' : 'text-blue-300'}`}>
                  {scores[0] >= 10 ? 'YOU WON!' : 'YOU LOST'}
                </h2>
-               <p className="text-xl sm:text-2xl text-slate-300 mb-10 font-medium">
+               <p className="text-lg sm:text-2xl text-slate-300 mb-10 font-medium">
                  Final Score: <span className={scores[0] >= 10 ? 'text-yellow-400' : 'text-white'}>{scores[0]}</span> - <span className={scores[1] >= 10 ? 'text-red-500' : 'text-white'}>{scores[1]}</span>
                </p>
-               <button onClick={confirmStartNewGame} className="bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-black py-4 px-12 rounded-full shadow-[0_0_20px_rgba(234,179,8,0.5)] text-xl transition-transform hover:scale-105 active:scale-95 border-2 border-yellow-200 w-full sm:w-auto">
+               <button onClick={confirmStartNewGame} className="bg-gradient-to-b from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-black font-black py-3 px-8 sm:py-4 sm:px-12 rounded-full shadow-lg text-sm sm:text-xl transition-transform hover:scale-105 active:scale-95 border-2 border-yellow-200 w-full sm:w-auto">
                  PLAY AGAIN
                </button>
             </div>
